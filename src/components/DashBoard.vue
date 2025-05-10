@@ -10,10 +10,22 @@ import no3 from '@/assets/Frame_156.svg'
 import no4 from '@/assets/Frame_157.svg'
 import no5 from '@/assets/Frame_158.svg'
 
+import { storeToRefs } from 'pinia';
 import { useBookingStore } from '../stores/bookingStore';
+import { ref, computed } from 'vue'
 
 const bookingStore = useBookingStore();
+const { filterStatus, filteredBookings, bookings } = storeToRefs(bookingStore);
+const searchTerm = ref('')
 
+const suggestedNames = computed(() => {
+    if (!searchTerm.value) return []
+    return bookingStore.bookings.map(worker => worker.name).filter(name => name.toLowerCase().includes(searchTerm.value.toLowerCase()))
+})
+function selectName(name) {
+    searchTerm.value = name
+    bookingStore.setFilterName(name)
+}
 
 </script>
 
@@ -22,7 +34,12 @@ const bookingStore = useBookingStore();
         <div class="dashboard">
             <div class="top-board">
                 <h3>SCHEMALÄGGNING</h3>
-                <input type="text" placeholder="Sök...">
+                <input v-model="searchTerm" @input="bookingStore.setFilterName(searchInput)" placeholder="Sök..."/>
+                <ul v-if="suggestedNames.length">
+                <li v-for="name in suggestedNames" :key="name" @click="selectName(name)">
+                {{ name }}
+                </li>
+                </ul>
             </div>
 
             <div class="booking-info">
@@ -35,23 +52,21 @@ const bookingStore = useBookingStore();
                         <div>Rörmokare <img :src="wrench" alt="wrench icon"></div>
                     </div>
 
-                    <select id="sort-option" v-model="bookingStore.filters.status"
-                        @change="applyFilters('status', status.value)">
+                    <select id="sort-option" v-model="bookingStore.filterStatus">
                         <option disabled value="">Sortera på</option>
                         <option value="">Visa alla</option>
-                        <option value="booked">Bokad</option>
-                        <option value="prelbooked">Preliminärt bokad</option>
-                        <option value="50booked">50% bokad</option>
-                        <option value="100booked">100% bokad</option>
-                        <option value="available">Tillgänglig</option>
-                        <option value="absence">Frånvaro</option>
+                        <option value="Booked">Bokad</option>
+                        <option value="Preliminary">Preliminärt bokad</option>
+                        <option value="50">50% bokad</option>
+                        <option value="100">100% bokad</option>
+                        <option value="Absent">Frånvaro</option>
                     </select>
                 </div>
 
                 <div>
                     <div id="current-dashboard" class="framed">
-                        <p>Preliminära bokningar</p>
-                        <p>Du har 3 stycken väntande bokningar på 50%, klicka här för mer info.</p>
+                        <h3>Preliminära bokningar</h3>
+                        <p>Du har {{ bookingStore.prelCount }} stycken väntande bokningar, klicka <a @click="bookingStore.filterStatus = 'Preliminary'">här</a> för mer info.</p>
                     </div>
 
                     <div id="color-explain" class="framed">
@@ -84,9 +99,9 @@ export default {
         };
     },
     methods: {
-        applyFilters(type, value) {
+        applyFilters(value) {
             const filterValue = value === 'all' ? '' : value;
-            this.bookingStore.setFilter(type, filterValue.status);
+            this.bookingStore.setFilter(filterValue);
         }
     }
 }
@@ -148,7 +163,7 @@ export default {
     justify-content: space-between;
     width: 130px;
 
-    padding: 0.2rem;
+    padding: 0.5rem;
     height: 250px;
 }
 
@@ -162,6 +177,10 @@ export default {
     height: 225px;
     padding: 1rem;
     margin-bottom: 0.2rem;
+}
+
+#current-dashboard h3 {
+    margin-bottom: 1rem;
 }
 
 #statistics {
@@ -181,4 +200,14 @@ export default {
     display: flex;
     justify-content: space-between;
     padding: 0.2rem;
-}</style>
+}
+
+p > a {
+    text-decoration: underline;
+    cursor: default;
+}
+
+ul {
+    list-style-type: none;
+}
+</style>
