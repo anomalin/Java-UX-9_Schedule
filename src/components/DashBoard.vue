@@ -18,6 +18,10 @@ const bookingStore = useBookingStore();
 const { filterStatus, filteredBookings, bookings } = storeToRefs(bookingStore);
 const searchTerm = ref('')
 
+const filterProfession = (profession) => {
+    bookingStore.filterProfessionToggle(profession)
+}
+
 const suggestedNames = computed(() => {
     if (!searchTerm.value) return []
     return bookingStore.bookings.map(worker => worker.name).filter(name => name.toLowerCase().includes(searchTerm.value.toLowerCase()))
@@ -45,11 +49,11 @@ function selectName(name) {
             <div class="booking-info">
                 <div class="workers">
                     <div id="worker-info" class="framed">
-                        <div>Snickare <img :src="hammer" alt="hammer icon"></div>
-                        <div>Målare <img :src="brush" alt="brush icon"></div>
-                        <div>Elektriker <img :src="lightningbolt" alt="lightningbolt icon"></div>
-                        <div>Murare <img :src="brickwall" alt="brickwall icon"></div>
-                        <div>Rörmokare <img :src="wrench" alt="wrench icon"></div>
+                        <div @click="filterProfession('Carpenter')">Snickare <img :src="hammer" alt="hammer icon"></div>
+                        <div @click="filterProfession('Painter')">Målare <img :src="brush" alt="brush icon"></div>
+                        <div @click="filterProfession('Electrician')">Elektriker <img :src="lightningbolt" alt="lightningbolt icon"></div>
+                        <div @click="filterProfession('Mason')">Murare <img :src="brickwall" alt="brickwall icon"></div>
+                        <div @click="filterProfession('Plumber')">Rörmokare <img :src="wrench" alt="wrench icon"></div>
                     </div>
 
                     <select id="sort-option" v-model="bookingStore.filterStatus">
@@ -63,7 +67,7 @@ function selectName(name) {
                     </select>
                 </div>
 
-                <div>
+                <div class="prel">
                     <div id="current-dashboard" class="framed">
                         <h3>Preliminära bokningar</h3>
                         <p>Du har {{ bookingStore.prelCount }} stycken väntande bokningar, klicka <a @click="bookingStore.filterStatus = 'Preliminary'">här</a> för mer info.</p>
@@ -112,11 +116,19 @@ export default {
 .container {
     max-width: 1280px;
     margin: 0 auto;
+    margin-bottom: 1rem;
 }
 
 .dashboard>div {
     display: flex;
     justify-items: center;
+}
+
+.prel {
+    display: flex;
+    flex-direction: column;
+    align-content: space-between;
+    gap: 0.5rem;
 }
 
 .booking-info {
@@ -170,11 +182,12 @@ export default {
 #worker-info>div {
     display: flex;
     justify-content: space-between;
+    cursor: default;
 }
 
 #current-dashboard {
     width: 400px;
-    height: 225px;
+    height: 242px;
     padding: 1rem;
     margin-bottom: 0.2rem;
 }
@@ -188,12 +201,12 @@ export default {
     justify-content: center;
     align-content: center;
     width: 380px;
-    height: 288px;
+    
 }
 
 #schedule {
     width: 260px;
-    height: 288px;
+   
 }
 
 #color-explain {

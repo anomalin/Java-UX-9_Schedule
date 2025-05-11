@@ -6,7 +6,8 @@ export const useBookingStore = defineStore('bookings', {
     loading: false,
     error: null,
     filterStatus: '',
-    filterName: null,
+    filterName: '',
+    filterProfession: '',
   }),
   actions: {
     async fetchBookings() {
@@ -29,36 +30,46 @@ export const useBookingStore = defineStore('bookings', {
       this.filterName = name
     },
     clearFilterName() {
-      this.filterName = nullß
+      this.filterName = null
+    },
+    setFilterProfession(profession) {
+      this.filterProfession = profession
+    },
+    clearFilterProfession() {
+      this.filterProfession = null
+    },
+    filterProfessionToggle(profession) {
+      if (this.filterProfession === profession) {
+        this.filterProfession = '';
+      } else {
+        this.filterProfession = profession;
+      }
     }
   },
   getters: {
     filteredBookings(state) {
       return state.bookings
         .filter(worker => {
-          if (state.filterName) {
-            return worker.name.toLowerCase().includes(state.filterName.toLowerCase());
-          }
-          return true;
+          const matchesName = !state.filterName || worker.name.toLowerCase().includes(state.filterName.toLowerCase());
+          const matchesProfession = !state.filterProfession || worker.professions.includes(state.filterProfession);
+          return matchesName && matchesProfession;
         })
         .map(worker => {
           const bookings = worker.bookings || [];
-
+    
           const filtered = bookings.filter(b => {
             if (state.filterStatus) {
               return b.status === state.filterStatus;
             }
             return true;
           });
-
+    
           return {
             ...worker,
             bookings: filtered,
           };
         });
-    }
-
-    ,
+    },
     prelCount(state) {
       return state.bookings.reduce((sum, worker) => {
         const prels = worker.bookings?.filter(b => b.status === 'Preliminary') ?? [];
