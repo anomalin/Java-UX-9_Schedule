@@ -33,6 +33,7 @@ import user from '@/assets/Group_45.svg'
     display: flex; 
     flex-direction: row;
     justify-content: space-between;
+    margin: 0.2rem;
 }
 
 .menu-icons {

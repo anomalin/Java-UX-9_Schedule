@@ -39,34 +39,6 @@ const tooltip = computed(() => {
 </script>
 
 <style scoped>
-/* worker boxes */
-.schedule-list {
-    grid-column: auto;
-}
-
-.workers {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-}
-
-.workers * {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    border: 0.5px;
-    background-color: #E9E7E7;
-    width: 54px;
-    height: 63px;
-
-    text-align: center;
-    white-space: normal;
-    overflow: hidden;
-    border-radius: 5px;
-
-    /* outline: 1px solid red; */          /* uncomment to debug */
-}
 
 .day-cell {
     color: #03045E;
@@ -89,35 +61,9 @@ const tooltip = computed(() => {
     background-color: #00FF73;
 }
 
-.schedule-box-orange {
-    background-color: #FFB200;
-    border-style: dashed;
-}
-
 .absent {
     background-color: #FF0000;
     color: #FFFFFF;
-}
-
-
-
-.worker-column-info {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-
-    background-color: #D9D9D9;
-    width: 133px; 
-    height: 55px;
-    margin-right: 17px;
-    margin-bottom: 17px;
-    border: 0.5px;
-
-}
-
-.schedule-box-date{
-    background-color: #D9D9D9;
-    font-size: 12px;
 }
 
 .preliminary.percentage50 {

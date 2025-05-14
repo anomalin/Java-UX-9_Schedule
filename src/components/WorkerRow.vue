@@ -1,7 +1,7 @@
 <template>
      <div class="schedule-box-worker">
             <div class="worker-short">
-            <div>Bild</div>
+            <img :src="profile" alt="profile">
             <div>
                 <div class="schedule-box-profile"> {{ worker.name }} </div>
                 <div class="schedule-box-profile">{{ worker.professions.join(', ') }}</div>
@@ -13,6 +13,7 @@
 
 <script setup>
 import DayCell from './DayCell.vue'
+import profile from '@/assets/profile.png'
 
 
 const props = defineProps({

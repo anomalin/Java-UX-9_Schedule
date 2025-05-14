@@ -11,8 +11,10 @@
     "lint": "eslint . --fix"
   },
   "dependencies": {
+    "@popperjs/core": "^2.11.8",
     "date-fns": "^4.1.0",
     "pinia": "^3.0.1",
+    "v-calendar": "^3.1.2",
     "vue": "^3.5.13"
   },
   "devDependencies": {

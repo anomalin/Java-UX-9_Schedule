@@ -88,7 +88,7 @@ function selectName(name) {
                 </div>
 
                 <div id="schedule" class="framed">
-
+                    <VCalendar transparent borderless />
                 </div>
             </div>
         </div>
@@ -206,7 +206,9 @@ export default {
 
 #schedule {
     width: 260px;
-   
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 #color-explain {
