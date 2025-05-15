@@ -1,10 +1,11 @@
 <template>
-    <div class="day-cell" :class="[statusClass, { percentage50: bookingForThisDay?.percentage === 50}]" :title="tooltip"></div>
+    <div class="day-cell" :class="[statusClass, { percentage50: bookingForThisDay.some(b => b.percentage === 50) }]"
+ :title="tooltip"></div>
 </template>
 
 <script setup>
 import { computed } from 'vue'
-import { isSameDay, parseISO } from 'date-fns'
+import { isSameDay, parseISO, isWithinInterval } from 'date-fns'
 
 const props = defineProps({
     date: {
@@ -14,26 +15,34 @@ const props = defineProps({
     bookings: Array
 })
 
-const bookingForThisDay = computed(() => {
-  if (!props.date || !Array.isArray(props.bookings)) return undefined
 
-  return props.bookings.find(b =>
-    isSameDay(parseISO(b.from), new Date(props.date))
+const bookingForThisDay = computed(() => {
+  if (!props.date || !Array.isArray(props.bookings)) return []
+
+  const selectedDate = new Date(props.date)
+
+  return props.bookings.filter(b =>
+    isWithinInterval(selectedDate, {
+      start: parseISO(b.from),
+      end: parseISO(b.to)
+    })
   )
 })
 
-
 const statusClass = computed(() => {
-    if (!bookingForThisDay.value) return 'free'
-    if (bookingForThisDay.value.status === 'Booked') return 'booked'
-    if (bookingForThisDay.value.status === 'Preliminary') return 'preliminary'
-    if (bookingForThisDay.value.status === 'Absent') return 'absent'
-    return 'other'
+  const b = bookingForThisDay.value[0] // eller någon annan logik
+  if (!b) return 'free'
+  if (b.status === 'Booked') return 'booked'
+  if (b.status === 'Preliminary') return 'preliminary'
+  if (b.status === 'Absent') return 'absent'
+  return 'other'
 })
 
 const tooltip = computed(() => {
-    const b = bookingForThisDay.value
-    return b ? `${b.activity}, ${b.percentage}%, ${b.status}` : 'Ingen bokning'
+  if (bookingForThisDay.value.length === 0) return 'Ingen bokning'
+  return bookingForThisDay.value
+    .map(b => `${b.activity}, ${b.percentage}%, ${b.status}`)
+    .join('\n') // Radbrytning i tooltip
 })
 
 </script>
@@ -74,3 +83,4 @@ const tooltip = computed(() => {
    background-color: #FFB200; 
 }
 </style>
+

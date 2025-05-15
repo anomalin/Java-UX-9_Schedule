@@ -1,3 +1,14 @@
+<script setup>
+import DayCell from './DayCell.vue'
+import profile from '@/assets/profile.png'
+
+
+const props = defineProps({
+    worker: Object,
+    days: Array
+})
+</script>
+
 <template>
      <div class="schedule-box-worker">
             <div class="worker-short">
@@ -11,19 +22,6 @@
     </div>
 </template>
 
-<script setup>
-import DayCell from './DayCell.vue'
-import profile from '@/assets/profile.png'
-
-
-const props = defineProps({
-    worker: Object,
-    days: Array
-})
-
-
-
-</script>
 
 <style scoped>
 .worker-short {

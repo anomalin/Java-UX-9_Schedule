@@ -12,7 +12,26 @@ import no5 from '@/assets/Frame_158.svg'
 
 import { storeToRefs } from 'pinia';
 import { useBookingStore } from '../stores/bookingStore';
+import { parseISO } from 'date-fns';
 import { ref, computed } from 'vue'
+import { use } from 'echarts/core';
+import { CanvasRenderer } from 'echarts/renderers';
+import { PieChart } from 'echarts/charts';
+import {
+  TitleComponent,
+  TooltipComponent,
+  LegendComponent,
+} from 'echarts/components';
+import VChart from 'vue-echarts'
+import { getBookingStats } from '@/utils/bookingUtils'
+
+use([
+  CanvasRenderer,
+  PieChart,
+  TitleComponent,
+  TooltipComponent,
+  LegendComponent,
+]);
 
 const bookingStore = useBookingStore();
 const { filterStatus, filteredBookings, bookings } = storeToRefs(bookingStore);
@@ -30,6 +49,39 @@ function selectName(name) {
     searchTerm.value = name
     bookingStore.setFilterName(name)
 }
+const startDate = parseISO('2025-05-11')
+const endDate = parseISO('2025-06-05')
+const bookingStats = computed(() => {
+  const allBookings = bookingStore.filteredBookings.flatMap(worker => worker.bookings ?? []);
+  return getBookingStats(allBookings, startDate, endDate);
+});
+
+const option = computed(() => ({
+
+    series: [
+        {
+            name: 'Status',
+            type: 'pie',
+            radius: '50%',
+            data: [
+                { value: bookingStats.value.booked100, name: 'Bokad 100%' },
+                { value: bookingStats.value.booked50, name: 'Bokad 50%' },
+                { value: bookingStats.value.preliminary100, name: 'Preliminär 100%' },
+                { value: bookingStats.value.preliminary50, name: 'Preliminär 50%' },
+                { value: bookingStats.value.absent, name: 'Frånvarande' },
+                { value: bookingStats.value.free, name: 'Tillgänglig för bokning' }
+            ],
+            emphasis: {
+                itemStyle: {
+                    shadowBlur: 10,
+                    shadowOffsetX: 0,
+                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+                }
+            }
+        }
+    ]
+
+}))
 
 </script>
 
@@ -84,7 +136,7 @@ function selectName(name) {
 
                 <div id="statistics" class="framed">
                     <h2>STATISTIK</h2>
-
+                    <v-chart class="chart" :option="option" autoresize />
                 </div>
 
                 <div id="schedule" class="framed">
@@ -109,6 +161,8 @@ export default {
         }
     }
 }
+
+
 </script>
 
 
@@ -198,6 +252,7 @@ export default {
 
 #statistics {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-content: center;
     width: 380px;
@@ -225,4 +280,10 @@ p > a {
 ul {
     list-style-type: none;
 }
+
+.chart {
+    width: 300px;
+}
 </style>
+
+
