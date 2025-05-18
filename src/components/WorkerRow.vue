@@ -2,7 +2,6 @@
 import DayCell from './DayCell.vue'
 import profile from '@/assets/profile.png'
 
-
 const props = defineProps({
     worker: Object,
     days: Array
@@ -15,7 +14,7 @@ const props = defineProps({
             <img :src="profile" alt="profile">
             <div>
                 <div class="schedule-box-profile"> {{ worker.name }} </div>
-                <div class="schedule-box-profile">{{ worker.professions.join(', ') }}</div>
+                <div class="schedule-box-profile-text">{{ worker.professions.join(', ') }}</div>
             </div>
             </div>
         <DayCell v-for="day in days" :key="day.toISOString()" :date="day" :bookings="worker.bookings"/>
@@ -27,7 +26,6 @@ const props = defineProps({
 .worker-short {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
     width: 150px;
     background-color: #D9D9D9;
     padding: 0.2rem;
@@ -37,6 +35,11 @@ const props = defineProps({
 .worker-short > div {
     display: flex;
     flex-direction: column;
-    align-content: flex-end;
+    margin-left: 0.1rem;
+    align-content: center;
+    justify-content: center;
 }
+
+
+
 </style>

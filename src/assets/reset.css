@@ -1,4 +1,5 @@
 @import 'v-calendar/style.css';
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
 
 * {
     margin: 0;
@@ -6,7 +7,7 @@
     box-sizing: border-box;
   }
   body {
-    font-family: sans-serif;
+    font-family: 'Inter', sans-serif;
     background: #f7f7f7;
     color: #333;
   }

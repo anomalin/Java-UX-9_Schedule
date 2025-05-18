@@ -33,7 +33,9 @@ import user from '@/assets/Group_45.svg'
     display: flex; 
     flex-direction: row;
     justify-content: space-between;
-    margin: 0.2rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 0.2rem;
+    margin-bottom: 2rem;
 }
 
 .menu-icons {

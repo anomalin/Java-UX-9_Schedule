@@ -49,6 +49,10 @@ onMounted(() => {
     margin-bottom: 0.5rem;
 }
 
+.header-row > img {
+    align-self: center;
+}
+
 .header-workercell {
     background-color: #D9D9D9;
     border-radius: 5px;

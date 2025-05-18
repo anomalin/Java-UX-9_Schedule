@@ -5,7 +5,7 @@
 
 <script setup>
 import { computed } from 'vue'
-import { isSameDay, parseISO, isWithinInterval } from 'date-fns'
+import { parseISO, isWithinInterval } from 'date-fns'
 
 const props = defineProps({
     date: {

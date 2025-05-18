@@ -57,20 +57,35 @@ const bookingStats = computed(() => {
 });
 
 const option = computed(() => ({
-
+    tooltip: {
+            trigger: 'item',
+            formatter: '{b}: ({d}%)'
+    },
     series: [
         {
             name: 'Status',
             type: 'pie',
             radius: '50%',
             data: [
-                { value: bookingStats.value.booked100, name: 'Bokad 100%' },
-                { value: bookingStats.value.booked50, name: 'Bokad 50%' },
-                { value: bookingStats.value.preliminary100, name: 'Preliminär 100%' },
-                { value: bookingStats.value.preliminary50, name: 'Preliminär 50%' },
-                { value: bookingStats.value.absent, name: 'Frånvarande' },
-                { value: bookingStats.value.free, name: 'Tillgänglig för bokning' }
+                { value: bookingStats.value.booked100, name: 'Bokad 100%', itemStyle: { color: '#00FF73' } },
+                { value: bookingStats.value.booked50, name: 'Bokad 50%', itemStyle: { color: '#99f78c' } },
+                { value: bookingStats.value.preliminary100, name: 'Preliminär 100%', itemStyle: { color: '#FFB200' } },
+                { value: bookingStats.value.preliminary50, name: 'Preliminär 50%', itemStyle: { color: '#FFC107' } },
+                { value: bookingStats.value.absent, name: 'Frånvarande', itemStyle: { color: '#FF0000' } },
+                { value: bookingStats.value.free, name: 'Tillgänglig', itemStyle: { color: '#E9E7E7' } }
             ],
+            label: {
+                show: true,
+                position: 'outside',
+                overflow: 'break',
+                formatter: '{b}',
+                width: 120, // justera vid behov
+            },
+            labelLine: {
+                show: true,
+                length: 10,
+                length2: 10
+            },
             emphasis: {
                 itemStyle: {
                     shadowBlur: 10,
@@ -113,8 +128,6 @@ const option = computed(() => ({
                         <option value="">Visa alla</option>
                         <option value="Booked">Bokad</option>
                         <option value="Preliminary">Preliminärt bokad</option>
-                        <option value="50">50% bokad</option>
-                        <option value="100">100% bokad</option>
                         <option value="Absent">Frånvaro</option>
                     </select>
                 </div>
@@ -122,7 +135,7 @@ const option = computed(() => ({
                 <div class="prel">
                     <div id="current-dashboard" class="framed">
                         <h3>Preliminära bokningar</h3>
-                        <p>Du har {{ bookingStore.prelCount }} stycken väntande bokningar, klicka <a @click="bookingStore.filterStatus = 'Preliminary'">här</a> för mer info.</p>
+                        <p>Du har {{ bookingStore.prelCount }} stycken väntande bokningar, <a @click="bookingStore.filterStatus = 'Preliminary'">klicka här</a> för mer info.</p>
                     </div>
 
                     <div id="color-explain" class="framed">
@@ -228,7 +241,6 @@ export default {
     flex-direction: column;
     justify-content: space-between;
     width: 130px;
-
     padding: 0.5rem;
     height: 250px;
 }
@@ -253,10 +265,12 @@ export default {
 #statistics {
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-content: center;
-    width: 380px;
-    
+    width: 380px;   
+}
+
+#statistics > h2 {
+    margin: 0.8rem;
 }
 
 #schedule {
@@ -283,6 +297,7 @@ ul {
 
 .chart {
     width: 300px;
+    margin-left: 2rem;
 }
 </style>
 
