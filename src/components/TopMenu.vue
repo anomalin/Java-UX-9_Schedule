@@ -15,8 +15,8 @@ import user from '@/assets/Group_45.svg'
         <div class="menu-icons">
             <img :src="group" alt="group icon">
             <img :src="question" alt="questions icon">
-            <img :src="settings" alt="settings icon">
             <img :src="home" alt="home icon">
+            <img :src="settings" alt="settings icon">
             <img :src="user" alt="user icon">
         </div>
     </div>
@@ -40,6 +40,7 @@ import user from '@/assets/Group_45.svg'
 
 .menu-icons {
     display: flex;
-    gap: 0.5rem;
+    gap: 1rem;
+    padding: 0.5rem;
 }
 </style>

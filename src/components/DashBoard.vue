@@ -160,23 +160,7 @@ const option = computed(() => ({
     </div>
 </template>
 
-<script>
-export default {
-    data() {
-        return {
-            status: ''
-        };
-    },
-    methods: {
-        applyFilters(value) {
-            const filterValue = value === 'all' ? '' : value;
-            this.bookingStore.setFilter(filterValue);
-        }
-    }
-}
 
-
-</script>
 
 
 <style scoped>
@@ -248,7 +232,7 @@ export default {
 #worker-info>div {
     display: flex;
     justify-content: space-between;
-    cursor: default;
+    cursor: pointer;
 }
 
 #current-dashboard {
