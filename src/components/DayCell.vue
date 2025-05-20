@@ -30,7 +30,7 @@ const bookingForThisDay = computed(() => {
 })
 
 const statusClass = computed(() => {
-  const b = bookingForThisDay.value[0] // eller någon annan logik
+  const b = bookingForThisDay.value[0] 
   if (!b) return 'free'
   if (b.status === 'Booked') return 'booked'
   if (b.status === 'Preliminary') return 'preliminary'
@@ -42,7 +42,7 @@ const tooltip = computed(() => {
   if (bookingForThisDay.value.length === 0) return 'Ingen bokning'
   return bookingForThisDay.value
     .map(b => `${b.activity}, ${b.percentage}%, ${b.status}`)
-    .join('\n') // Radbrytning i tooltip
+    .join('\n') 
 })
 
 </script>
