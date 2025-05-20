@@ -27,11 +27,11 @@ onMounted(() => {
     <div class="schedule-grid">
     <div class="header-row">
     <div class="header-workercell"><p>Hantverkare:</p></div>
-    <div class="header-daycell" v-for="day in days" :key="day.toISOString()"> {{ format(day, 'd') }} </div>
+    <div class="header-daycell" v-for="day in days" :key="day.toISOString()"> <div>{{ format(day, 'iiiii') }}</div> {{ format(day, 'd') }} </div>
     </div>
         <WorkerRow class="worker-row" v-for="worker in workersToShow" :key="worker.name" :worker="worker" :days="days"/>
     </div>
-   
+
 </template>
 
 
@@ -65,13 +65,14 @@ onMounted(() => {
 
 .header-daycell {
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     background-color: #D9D9D9;
     border-radius: 5px;
     width: 54px;
     height: 55px;
-    
+
 }
 
 .worker-row {
